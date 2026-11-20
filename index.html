@@ -1,0 +1,763 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="author" content="yoyogipinball">
+<!-- 作成: yoyogipinball -->
+<title>ChatGPTを仕事で使うための手引き</title>
+<style>
+:root {
+  --ink:#1a1a1c;
+  --sub:#4d4d52;
+  --navy:#1b3a5c;
+  --line:#c8ced6;
+  --pale:#f2f5f8;
+  --warn:#9a3412;
+  --warnbg:#fff6ef;
+  --ok:#1f6b3a;
+  --fs-body:16px;
+  --fs-sub:14px;
+  --lh-body:1.75;
+}
+
+* {
+  box-sizing:border-box;
+}
+
+html,body {
+  background:#fff;
+}
+
+body {
+  margin:0;
+  color:var(--ink);
+  font-family:"Noto Sans JP","Hiragino Sans","Yu Gothic","YuGothic","Meiryo",sans-serif;
+  font-size:var(--fs-body);
+  line-height:var(--lh-body);
+  line-break:strict;
+  overflow-wrap:break-word;
+}
+
+h1,h2,h3 {
+  text-wrap:balance;
+  word-break:auto-phrase;
+}
+
+p,li,dd,td,th {
+  text-wrap:pretty;
+}
+
+.kana-word {
+  word-break:keep-all;
+}
+
+.page {
+  max-width:48em;
+  margin:0 auto;
+  padding:40px 24px 64px;
+}
+
+header.doc {
+  border-top:4px solid var(--navy);
+  border-bottom:1px solid var(--line);
+  padding:20px 0 16px;
+  margin-bottom:32px;
+}
+
+header.doc h1 {
+  font-size:24px;
+  line-height:1.5;
+  margin:0 0 8px;
+  color:var(--navy);
+}
+
+header.doc dl {
+  display:grid;
+  grid-template-columns:auto 1fr;
+  gap:2px 16px;
+  margin:12px 0 0;
+  font-size:var(--fs-sub);
+}
+
+header.doc dt {
+  color:var(--sub);
+}
+
+header.doc dd {
+  margin:0;
+}
+
+h2 {
+  font-size:20px;
+  line-height:1.5;
+  color:var(--navy);
+  margin:48px 0 16px;
+  padding:6px 12px;
+  background:var(--pale);
+  border-left:5px solid var(--navy);
+  break-after:avoid;
+}
+
+h3 {
+  font-size:18px;
+  line-height:1.6;
+  color:var(--navy);
+  margin:28px 0 8px;
+  padding-bottom:4px;
+  border-bottom:1px solid var(--line);
+  break-after:avoid;
+}
+
+p {
+  margin:0 0 14px;
+}
+
+ul,ol {
+  margin:0 0 16px;
+  padding-left:1.5em;
+}
+
+li {
+  margin-bottom:6px;
+}
+
+a {
+  color:#1d4ed8;
+  overflow-wrap:anywhere;
+}
+
+small,.sub {
+  font-size:var(--fs-sub);
+  color:var(--sub);
+}
+
+.box {
+  border:1px solid var(--line);
+  border-left:5px solid var(--navy);
+  padding:16px 20px 4px;
+  margin:0 0 24px;
+  background:var(--pale);
+  break-inside:avoid;
+}
+
+.box .bt {
+  font-weight:700;
+  color:var(--navy);
+  margin:0 0 8px;
+}
+
+.box.warn {
+  border-left-color:var(--warn);
+  background:var(--warnbg);
+}
+
+.box.warn .bt {
+  color:var(--warn);
+}
+
+.tbl {
+  overflow-x:auto;
+  margin:0 0 20px;
+}
+
+table {
+  border-collapse:collapse;
+  width:100%;
+  font-size:15px;
+  line-height:1.65;
+}
+
+th,td {
+  border:1px solid var(--line);
+  padding:8px 10px;
+  text-align:left;
+  vertical-align:top;
+}
+
+thead th {
+  background:#e6ecf2;
+  color:var(--navy);
+}
+
+tbody th {
+  background:#fafbfc;
+  font-weight:700;
+  white-space:nowrap;
+}
+
+.flow {
+  display:flex;
+  flex-direction:column;
+  gap:0;
+  margin:0 0 20px;
+}
+
+.flow .n {
+  border:1px solid var(--line);
+  padding:10px 14px;
+  background:#fff;
+}
+
+.flow .n b {
+  color:var(--navy);
+}
+
+.flow .a {
+  padding:2px 0 2px 24px;
+  color:var(--sub);
+  font-size:var(--fs-sub);
+}
+
+.flow .split {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.steps {
+  counter-reset:s;
+  list-style:none;
+  padding:0;
+}
+
+.steps>li {
+  counter-increment:s;
+  position:relative;
+  padding:12px 14px 6px 52px;
+  border:1px solid var(--line);
+  margin-bottom:10px;
+  break-inside:avoid;
+}
+
+.steps>li::before {
+  content:counter(s);
+  position:absolute;
+  left:12px;
+  top:12px;
+  width:28px;
+  height:28px;
+  border-radius:50%;
+  background:var(--navy);
+  color:#fff;
+  font-weight:700;
+  text-align:center;
+  line-height:28px;
+  font-size:var(--fs-sub);
+}
+
+.menu {
+  font-weight:700;
+}
+
+code {
+  font-family:"Consolas","Noto Sans Mono",monospace;
+  background:var(--pale);
+  border:1px solid var(--line);
+  border-radius:3px;
+  padding:0 4px;
+  font-size:15px;
+}
+
+.req {
+  display:grid;
+  grid-template-columns:9em 1fr;
+  border-top:1px solid var(--line);
+  margin:0 0 20px;
+}
+
+.req dt,.req dd {
+  margin:0;
+  padding:8px 10px;
+  border-bottom:1px solid var(--line);
+}
+
+.req dt {
+  background:#fafbfc;
+  font-weight:700;
+  color:var(--navy);
+}
+
+.blank {
+  background:#fff3b0;
+  padding:0 2px;
+}
+
+.src li {
+  font-size:var(--fs-sub);
+}
+
+footer.doc {
+  margin-top:48px;
+  border-top:1px solid var(--line);
+  padding-top:12px;
+  font-size:var(--fs-sub);
+  color:var(--sub);
+}
+
+@media (max-width:600px) {
+  .page {
+    padding:24px 16px 48px;
+  }
+  .req {
+    grid-template-columns:1fr;
+  }
+  .req dt {
+    border-bottom:0;
+  }
+  .flow .split {
+    grid-template-columns:1fr;
+  }
+  tbody th {
+    white-space:normal;
+  }
+}
+
+@media print {
+  .page {
+    max-width:none;
+    padding:0;
+  }
+  a {
+    color:inherit;
+  }
+  h2 {
+    margin-top:28px;
+  }
+}
+
+.copy {
+  position:relative;
+  margin:0 0 20px;
+  border:1px solid var(--line);
+  background:#fafbfc;
+}
+
+.copy pre {
+  margin:0;
+  padding:14px 16px;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+  font-family:"Consolas","Noto Sans Mono",monospace;
+  font-size:15px;
+  line-height:1.7;
+}
+
+.copy .bar {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:8px;
+  padding:6px 8px 6px 14px;
+  border-bottom:1px solid var(--line);
+  background:#e6ecf2;
+}
+
+.copy .bar span {
+  font-size:var(--fs-sub);
+  color:var(--navy);
+  font-weight:700;
+}
+
+.copy button {
+  font:inherit;
+  font-size:var(--fs-sub);
+  padding:4px 14px;
+  border:1px solid var(--navy);
+  background:#fff;
+  color:var(--navy);
+  border-radius:4px;
+  cursor:pointer;
+  min-height:36px;
+}
+
+.copy button:hover {
+  background:var(--navy);
+  color:#fff;
+}
+
+.copy button:focus-visible {
+  outline:3px solid #ffd43d;
+  outline-offset:2px;
+}
+
+.toc {
+  border:1px solid var(--line);
+  padding:12px 20px 4px;
+  margin:0 0 32px;
+}
+
+.toc ol {
+  margin:0 0 8px;
+}
+
+.fig {
+  max-width:480px;
+  margin:0 auto 24px;
+}
+
+.fig svg {
+  display:block;
+  width:100%;
+  height:auto;
+  font-family:inherit;
+}
+
+p,li,dd,td,th,.copy pre {
+  word-break:auto-phrase;
+}
+
+@media print {
+  .copy button {
+    display:none;
+  }
+  .box,.tbl,.fig,.steps li,tr,.copy .bar {
+    break-inside:avoid;
+  }
+  h2,h3,.bt,.copy .bar {
+    break-after:avoid;
+  }
+  p {
+    orphans:2;
+    widows:2;
+  }
+}
+</style></head>
+<body>
+<div class="page">
+    <header class="doc">
+      <h1>ChatGPTを仕事で使うための手引き</h1>
+      <p class="sub">事務の仕事でAIに助けてもらうための設定と今後の学び方</p>
+      <dl>
+        <dt>作成日</dt><dd>2026年11月17日</dd>
+        <dt>対象</dt><dd>ChatGPTのデスクトップアプリ（Windows）。ChatGPT Proの契約を前提にしています</dd>
+        <dt>注意</dt><dd>料金や機能、画面の名前は作成日時点のものです。AIの世界は変化が速いので、古くなっていたらChatGPTに最新の情報を調べてもらってください</dd>
+      </dl>
+    </header>
+
+    <p>この資料は私が普段AIと仕事をするときの決まりごとから<br>
+      事務の仕事に役立つものだけを集めたものです。<br>
+      全部を一度に入れる必要はありません。合わないと思ったらいつでも削除したり書き換えたりしてください。</p>
+
+    <nav class="toc"><ul style="list-style:none;padding-left:0">
+        <li><a href="#s0">はじめに</a></li>
+        <li><a href="#s1">1. 決まりごとと3つの道具を設定する</a></li>
+        <li><a href="#s2">2. AIの種類と違い</a></li>
+        <li><a href="#s3">3. この先の広げ方と学び方</a></li>
+    </ul></nav>
+
+    <h2 id="s0">はじめに</h2>
+    <p>使い始める前に、次の2つだけは必ず覚えておいてください。</p>
+
+    <div class="box warn"><p class="bt">1. 大いなる力には大いなる責任が伴う</p>
+      <p>映画の『スパイダーマン』でも登場した言葉ですね。</p>
+      <p>Chat GPT（Codex）に限らず、<br>
+        ファイルを操作できる権限を与えられた生成AIはPCの中のファイルを読んだり作ったり消したりできます。<br>
+        便利な反面、指示の行き違いひとつで大事なファイルが上書きされかねません。<br>
+        AIに広い権限を与えていると、最悪の場合はパソコン内のデータが全て消えることもあり得ます。</p>
+      <p>最初は練習用のフォルダーを1つ作り、ファイルの写しを入れて試してください。<br>
+        Codexの画面では、そのフォルダーを開いてから作業を頼みます（開き方は1-1にあります）。<br>
+        Codexには作業できるフォルダーを制限する仕組み（サンドボックス）と、操作の前に許可を求める設定が最初から付いています。<br>
+        慣れるまではこれらを緩めないでください。<br>
+        AIが「ファイルを削除します」「上書きします」と確認してきたら、内容をよく読んでから許可してください。</p>
+      <p>会社の資料は、会社がAIの利用を認めている範囲でだけ扱ってください。<br>
+        お客様の個人情報やパスワード、社外秘の資料は、AIに渡す前に一度立ち止まって考えてください。<br>
+        個人向けのプランでは、会話の内容がAIの改善に使われる設定が最初からオンになっています。<br>
+        「設定」→「データコントロール（Data controls）」→「すべての人のためにモデルを改善する（Improve the model for everyone）」でオフにできます。<br>
+        ただしオフにしても、会社の情報を入れてよいことにはなりません。</p></div>
+
+    <div class="box warn"><p class="bt">2. AIの発言は基本的に信じない</p>
+      <p>彼らは責任感や生存本能のある人間ではありません。<br>
+      AIは間違ったことでも自信を持って答えることがあります。<br>
+        「できました」「確認しました」という報告も、実際には出来ていない場合があります。<br>
+        報告を鵜呑みにせず、ファイルや出典のURLを自分で開いて確かめる習慣を付けてください。</p></div>
+
+    <h2 id="s1">1. 決まりごとと3つの道具を設定する</h2>
+
+    <h3>1-1. 決まりごとを貼る</h3>
+    <p>デスクトップアプリには、普通の会話をするChatGPTの画面と、パソコンのフォルダーを開いてファイルを扱うCodexの画面があります。この手引きの作業の多くはCodexの画面で行います。</p>
+    <p>Codexの画面では、最初に作業するフォルダーを開きます。<br>
+      「Add new project」（キーボードではCtrl+O）を押し、練習用のフォルダーを選んでください。<br>
+      日本語の画面では名前が違うことがあるので、見つからないときはChatGPTに「Codexでフォルダーを開く方法は？」と聞いてください。<br>
+      新しいチャットを始めるときは、作業する場所が「Local」（このパソコンのフォルダーで直接作業する設定）になっているかも確かめてください。<br>
+      Localなら、Codexが作ったファイルは基本的にこのフォルダーに入ります。それでも、保存した場所は毎回Codexに聞いて確かめてください。</p>
+    <p>決まりごとは、ChatGPTに毎回守ってほしいことを一度だけ入れておく設定です。<br>
+      貼っておくとChatGPTは作業の前に依頼を言い直して確かめ、段取りを説明してから始めるようになります。<br>
+      頼んだ内容の取り違えが減り、資料も結論から読める形で返ってきます。<br>
+      先生（メンター）のように、なぜそうするのかを説明してくれるのも特徴です。</p>
+    <p>決まりごとを入れる場所はChatGPTとCodexで別々なので、同じ文を2か所に入れてください。</p>
+    <figure class="fig"><svg viewBox="0 0 360 200" role="img" aria-label="1つの決まりごとを、ChatGPTのカスタム指示とCodexのAGENTS.mdの2か所に入れる図">
+<defs><marker id="ar1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#4d4d52"/></marker></defs>
+<rect x="60" y="8" width="240" height="48" rx="4" fill="#f2f5f8" stroke="#1b3a5c" stroke-width="1.5"/>
+<text x="180" y="38" text-anchor="middle" font-size="15" font-weight="700" fill="#1b3a5c">決まりごと（下の枠の文）</text>
+<line x1="140" y1="56" x2="100" y2="98" stroke="#4d4d52" stroke-width="1.5" marker-end="url(#ar1)"/>
+<line x1="220" y1="56" x2="260" y2="98" stroke="#4d4d52" stroke-width="1.5" marker-end="url(#ar1)"/>
+<rect x="4" y="100" width="170" height="92" rx="4" fill="#fff" stroke="#c8ced6" stroke-width="1.5"/>
+<text x="89" y="128" text-anchor="middle" font-size="15" font-weight="700" fill="#1a1a1c">ChatGPTの</text>
+<text x="89" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1a1a1c">カスタム指示</text>
+<text x="89" y="178" text-anchor="middle" font-size="14" fill="#4d4d52">普通の会話で効く</text>
+<rect x="186" y="100" width="170" height="92" rx="4" fill="#fff" stroke="#c8ced6" stroke-width="1.5"/>
+<text x="271" y="128" text-anchor="middle" font-size="15" font-weight="700" fill="#1a1a1c">Codexの</text>
+<text x="271" y="150" text-anchor="middle" font-size="15" font-weight="700" fill="#1a1a1c">AGENTS.md</text>
+<text x="271" y="178" text-anchor="middle" font-size="14" fill="#4d4d52">Codexの作業で効く</text>
+</svg></figure>
+    <ol class="steps">
+      <li>ChatGPTには、「設定（Settings）」→「パーソナライズ（Personalization）」にある「カスタム指示（Custom Instructions）」の欄に貼ります。<br>
+        Proなら5,000文字まで入ります</li>
+      <li>Codexには、Codexの画面で下の決まりごとを貼り、続けて「これを私の個人用のAGENTS.md（Codexが毎回読む決まりごとのファイル）に入れてください」と送ります</li>
+      <li>最後にCodexで新しいチャットを開き、「私の決まりごとを3行で要約して」と聞いて確かめます。<br>
+        内容が返ってくれば入っています</li>
+    </ol>
+    <p>画面の名前はアプリの更新で変わることがあります。<br>
+      見つからないときはChatGPTに「カスタム指示を入れる欄はどこ？」と聞いてください。</p>
+    <div class="copy"><div class="bar"><span>決まりごと（2か所に入れる）</span><button type="button">コピー</button></div><pre># 役割
+- メンターとして振る舞う。作業を代わりにするだけでなく、なぜそうするかを説明して、私が自分でできるよう次の一歩を示す
+
+# 仕事の進め方
+- 始める前に目的と完成形を1〜2行で言い直して確かめる。分からない点は作業の前にまとめて質問してよい
+- ファイルを作成・変更する仕事は、何をどの順で行うかを先に説明してから始める
+- 依頼者の意図を汲み、より良い形があれば提案する。実行は了承を得てから
+- 作り方を選べる仕事は案を3つ以上出し、違いとお勧めを添える。Webページや画面ならデモも作る
+- 元のファイルは変更せず別名で保存する。ファイルの削除や上書きは必ず事前に確認する
+- メールやメッセージの送信、ファイルの共有や公開、購入や支払いは、内容と相手を見せて了承を得てから行う
+- 完成物はWordやExcel、HTMLなど、そのまま開ける形式で渡す
+- 情報は一度疑う。公式の資料で確認して出典のURLを添え、確認できないことは「未確認」と書く
+- ツールの導入方法や画面の操作手順は、その都度公式の資料で最新の方法を調べる
+- 「校正して」と言われたら誤字・脱字・てにをは・表記ゆれだけを直し、内容と言い回しは変えない
+- 報告では、確認したことと確認していないことを分けて書く
+
+# 説明の仕方
+- 専門知識のない人が読んで分かる言葉で書く。専門用語は初めて出たときに一言で説明する
+- 結論を先に書き、理由と具体例を続ける。一般論の前に具体的な場面を見せる
+- 読み手が抱きそうな「なぜ？」に先に答える
+- 誰が何をどの条件でするのかを省かない
+- 表や図を出す前に、どこを見てほしいかを1文で書く
+- 声に出して読み、息をつく所にだけ読点を打つ。短い主語（「この商品は」）の後では区切らず、主語や前置きが長いときだけ打つ
+- 1文に読点が3つ以上になったら、文を分ける
+- 段落の中では1文ごとに改行する
+- 人に見せる文章は、yomiyasuで整えてから渡す
+
+# 手入れ
+- 同じ直しを2回頼まれたら、この決まりごとに足す1行を提案する
+- 効いていないと思う行があれば、削除を提案する</pre></div>
+
+    <div class="box"><p class="bt">決まりごとはきつく書きすぎない</p>
+      <p>寝て起きたら昨日導入した技術がもう古くなっていた、ということが本当に起きています。<br>
+        AIのモデルもほぼ毎月更新されていて、とても目まぐるしい世界です。<br>
+        細かく縛るほど、新しいモデルが本来の力を出せなくなります。</p>
+      <p>決まりごとは飼い犬の首輪のようなものです。緩すぎると暴れたときに抑えにくく、きつすぎると好きなように動き回れません。</p>
+      <p>また、こうした文章での指示は守られないことがあります。<br>
+        一番の守りは、上に書いたサンドボックスと許可の設定を緩めないことです。<br>
+        そのうえで最悪の事態（パソコン内のファイルの全消去など）を機械的に止める仕組みも足しておくと安心です。<br>
+        Codexにはhooks（AIが操作をする直前に、決められた検査を自動で実行する仕組み）があります。<br>
+        作り方は必要になったときにChatGPTと相談してください。</p>
+      <p>同じ直しを2回頼むと、ChatGPTのほうから「この1行を足しませんか」と提案してきます。良いと思ったときだけ足してください。</p></div>
+
+    <h3>1-2. yomiyasuを入れる（AIの文章を自然にする）</h3>
+    <p>スキルとは、特定の作業の手順をCodexに覚えさせておく追加の手順書です。<br>
+      名前を呼んで頼むと、Codexがその手順に沿って作業します。<br>
+      yomiyasuはAIが書いた日本語の硬い言い回しや、主語の曖昧な文を直すスキルで、日本の方が無料で公開しています。<br>
+      入れるときは、デスクトップアプリのCodexの画面で次の文を送ってください。<br>
+      文の中のgithub.comから始まる部分は、yomiyasuの配布元のページです。<br>
+      GitHubは、作った人がプログラムや説明書を公開して配るためのサイトです。<br>
+      導入方法は配布元の更新で変わるので、その時点の正しい方法をChatGPTに調べてもらいます。</p>
+    <div class="copy"><div class="bar"><span>Codexの画面で送る文</span><button type="button">コピー</button></div><pre>github.com/nanaism/yomiyasu の公式の導入方法を調べて、どのフォルダーで作業していても使えるように、私専用のスキルとして入れてください。
+追加のソフトの導入や設定の変更が必要なら、始める前に説明してください。
+入れ終わったら、新しいチャットでyomiyasuが使えることを、短い例文で確かめてください。</pre></div>
+    <p>直したい文によって頼み方を使い分けてください。</p>
+    <div class="tbl"><table>
+        <thead><tr><th>直したい文</th><th>頼み方</th><th>直る所</th></tr></thead>
+        <tbody>
+          <tr><th>自分で書いた文</th><td>「校正して」</td><td>誤字・脱字・てにをは・表記ゆれだけ。内容と言い回しは変わらない</td></tr>
+          <tr><th>AIが書いた文</th><td>「yomiyasuで直して」</td><td>不自然な言い回しや分かりにくい文の組み立て</td></tr>
+    </tbody></table></div>
+
+    <h3>1-3. 資料を作るスキルを入れる</h3>
+    <p>調べたことや説明を、毎回同じ見た目の読みやすい資料（HTMLファイル1枚）にまとめてもらうためのスキルです。<br>
+      私が作ってGitHubで公開しているyp-explainer-htmlを入れます。<br>
+      入れるときは、Codexの画面で次の文を送ってください。<br>
+      入れた後は「yp-explainer-htmlで資料にして」と頼むだけです。</p>
+    <div class="copy"><div class="bar"><span>Codexの画面で送る文</span><button type="button">コピー</button></div><pre>github.com/YoyogiPinball/yp-explainer-html の yp-explainer-html フォルダーを、公式の導入方法を調べて、どのフォルダーで作業していても使えるように、私専用のスキルとして入れてください。
+追加のソフトの導入や設定の変更が必要なら、始める前に説明してください。
+入れ終わったら、新しいチャットで短い資料を1つ作って確かめてください。</pre></div>
+    <p>どんな資料になるかは、<a target="_blank" rel="noopener noreferrer" href="https://github.com/YoyogiPinball/yp-explainer-html">配布元のページ</a>にある見本（迎賓館赤坂離宮の資料）で見られます。</p>
+    <p>出来たかどうかは、練習用のフォルダーを開いた新しいチャットで「yp-explainer-htmlで、yomiyasuの使い方を1枚の資料にして」と頼んで確かめてください。<br>
+      出来たら「作ったファイルはどこに保存した？」と聞き、そのファイル（名前の最後が「.html」）をダブルクリックします。<br>
+      EdgeやChromeなど、普段インターネットを見るアプリで開ければ成功です。</p>
+    <p>見た目や構成を変えたいときは「yp-explainer-htmlの見出しをもっと大きくして」のように頼むと、ChatGPTがあなたのパソコンに入ったスキルを直してくれます。</p>
+
+    <h3>1-4. 人に渡す前に見直してもらう</h3>
+    <p>資料を作ったチャットは作った経緯を知っています。<br>
+      そのため資料に書いていない前提を頭の中で補って読み、抜けに気付きにくくなります。<br>
+      人に渡す前は「一時チャット（Temporary Chat）」を「パーソナライズなし（Unpersonalized）」で開き、資料を添付して次の文を送ってください。<br>
+      この設定のチャットは過去の会話の記憶もカスタム指示も使わないので、初めて読む人に近い目で確かめられます。<br>
+      普通の新しいチャットでは、記憶の機能で過去の会話の内容が使われることがあります。</p>
+    <div class="copy"><div class="bar"><span>新しいチャットで送る文</span><button type="button">コピー</button></div><pre>今回添付した資料だけを前提に、初めて読む人として読んでください。分かりにくい所、抜けている所、これを信じて動くと困る所を、重要な順に場所付きで挙げてください。資料は直さないでください。</pre></div>
+    <p>指摘が返ってきたら、資料を作ったチャットにそれを貼って「この指摘のうち、正しいものだけ直して」と頼みます。指摘もAIの発言なので、全部が正しいとは限りません。</p>
+
+    <h3>1-5. 必要になったら入れるスキル</h3>
+    <p>Excel・Word・PowerPoint・PDFを扱う仕事が多いなら、Claudeを作っているAnthropicが無料で公開している次の4つのスキルが役に立ちます。<br>
+      Codexでもそのまま使える形式で作られています。</p>
+    <div class="tbl"><table>
+        <thead><tr><th>スキルの名前</th><th>できること</th></tr></thead>
+        <tbody>
+          <tr><th>xlsx</th><td>Excelの表の集計、数式・グラフ・書式の作成と修正</td></tr>
+          <tr><th>docx</th><td>Word文書の作成・編集・読み取り</td></tr>
+          <tr><th>pptx</th><td>PowerPointの資料の作成・編集</td></tr>
+          <tr><th>pdf</th><td>PDFの文字や表の抜き出し、結合・分割、フォームへの入力</td></tr>
+    </tbody></table></div>
+    <p>入れるときは、Codexの画面で「github.com/anthropics/skills にあるxlsxスキルを私専用のスキルとして入れてください。追加のソフトが必要なら、始める前に説明してください」のように頼みます。<br>
+      これらのスキルは、動かすのに追加のソフト（PythonやLibreOfficeなど）が要ることがあります。<br>
+      何を入れるのか説明を受け、納得してから進めてください。</p>
+    <p class="sub">出典は<a target="_blank" rel="noopener noreferrer" href="https://github.com/anthropics/skills">Anthropicの公式スキル集</a>、<a target="_blank" rel="noopener noreferrer" href="https://learn.chatgpt.com/docs/build-skills">Codexのスキルの説明（OpenAI）</a>の各ページです。</p>
+
+    <h2 id="s2">2. AIの種類と違い</h2>
+    <p>名前の似たAIが多いので、何をするための道具かで整理しました。<br>
+      料金は2026年11月時点の公式ページの表示で、ドル表示のものは税別です。<br>
+      日本での実際の請求額は購入画面で確かめてください。</p>
+    <div class="tbl"><table>
+        <thead><tr><th>名前</th><th>提供元</th><th>何をする道具か</th><th>個人向けの料金（月額）</th></tr></thead>
+        <tbody>
+          <tr><th>ChatGPT</th><td>OpenAI</td><td>会話・文章作成・画像生成・ファイルの分析・調べもの</td><td>Go 8ドル<br>
+              Plus 20ドル<br>
+              Pro 100・200・500ドル</td></tr>
+          <tr><th>Codex</th><td>OpenAI</td><td>パソコンのフォルダーの中のファイルを読み、作成や編集まで進めるAI。元はプログラム開発用ですが、事務の作業にも使えます</td><td>ChatGPTのプランに含まれる</td></tr>
+          <tr><th>Claude</th><td>Anthropic</td><td>会話・調べもの・ファイルの作成・長い資料の読み取り</td><td>Pro 20ドル<br>
+              Max 100ドル<br>
+              Ultra 200ドル</td></tr>
+          <tr><th>Claude Code</th><td>Anthropic</td><td>Codexと同じ種類の道具。フォルダーの中のファイルを読み、作成や編集まで進めます</td><td>ClaudeのPro以上に含まれる</td></tr>
+          <tr><th>Gemini</th><td>Google</td><td>会話・文章作成・調べもの・画像生成。GmailやGoogleドライブなど、Googleのサービスと連携できます</td><td>Google AI Plus 725円<br>
+              Pro 2,900円<br>
+              Ultra 14,500円から</td></tr>
+          <tr><th>Muse</th><td>Meta</td><td>メールの送信や予定の管理、旅行の計画や予約など、生活の用事を代わりに進める個人向けのAIエージェント。2026年10月23日に日本で提供が始まりました</td><td>基本機能は無料。多く使う人向けに有料プランあり</td></tr>
+          <tr><th>Grok</th><td>xAI</td><td>会話・文章作成・画像や動画の生成。X（旧Twitter）の投稿も含めて、最新の情報を調べられます</td><td>無料プランあり<br>
+              Plus 8ドル<br>
+              Premium 30ドル<br>
+              Super 100ドル<br>
+              Ultra 200ドル</td></tr>
+    </tbody></table></div>
+    <p>このほかに、中身が公開されていて自分のパソコンで動かせる「オープンモデル」（OpenAIのgpt-oss、GoogleのGemmaなど）もあります。<br>
+      性能の高いパソコンが要るので、事務作業ではまず必要ありません。</p>
+    <p class="sub">出典は<a target="_blank" rel="noopener noreferrer" href="https://chatgpt.com/pricing">ChatGPTの料金</a>、<a target="_blank" rel="noopener noreferrer" href="https://claude.com/ja/pricing">Claudeの料金</a>、<a target="_blank" rel="noopener noreferrer" href="https://gemini.google/jp/subscriptions/?hl=ja">Google AIプラン</a>、<a target="_blank" rel="noopener noreferrer" href="https://about.fb.com/ja/news/2026/10/muse-personal-ai-agent-launches-in-japan/">Museの日本提供開始（Meta）</a>、<a target="_blank" rel="noopener noreferrer" href="https://x.ai/pricing">Grokの料金</a>、<a target="_blank" rel="noopener noreferrer" href="https://lmstudio.ai/">LM Studio</a>、<a target="_blank" rel="noopener noreferrer" href="https://ollama.com/">Ollama</a>の各ページです。</p>
+
+    <div class="box"><p class="bt">私の使い分け</p>
+      <p>仕事のファイルを扱う作業なら、ChatGPTのデスクトップアプリのCodexで十分です。<br>
+        プライベートではMuseが最適解だと思います。<br>
+        旅行の際は、地図上の飲食店の配置や開店時間、混み具合、それから電車のチケットの取り方までMuseにお願いしましたが、特に不満なく使えました。</p></div>
+
+    <h2 id="s3">3. この先の広げ方と学び方</h2>
+
+    <h3>3-1. 外出先からスマホで使う</h3>
+    <p>会社や自宅のパソコンでデスクトップアプリを起動しておけば、外出先からスマホで作業を頼めます。作業そのものはパソコンの中で進むので、パソコンのファイルもそのまま使えます。</p>
+    <div class="tbl"><table>
+        <thead><tr><th>使うAI</th><th>機能の名前</th><th>できること</th><th>条件</th></tr></thead>
+        <tbody>
+          <tr><th>Codex</th><td>Remote connections（リモート接続）</td><td>スマホのChatGPTアプリから、WindowsやMacのChatGPTデスクトップアプリに作業を頼む</td><td>最初にデスクトップアプリの接続の設定でスマホと組み合わせておく。パソコンがスリープせずに起動していて、ネットにつながり、同じアカウントでログインしている</td></tr>
+          <tr><th>Claude Code</th><td>Remote Control（リモートコントロール）</td><td>パソコンで動いているClaude Codeの作業を、スマホのClaudeアプリから続ける</td><td>ClaudeのPro以上。パソコンでClaude Codeを動かしたままにしておく</td></tr>
+    </tbody></table></div>
+    <p>設定の手順はChatGPTやClaudeに「公式の資料を調べて、スマホから使う設定の手順を教えて」と頼んでください。なおClaudeのDispatch（スマホからデスクトップのClaudeに仕事を頼む別の機能）は、2026年11月時点では新しい利用者に提供されていません。</p>
+    <p class="sub">出典は<a target="_blank" rel="noopener noreferrer" href="https://learn.chatgpt.com/docs/remote-connections">Remote connections（OpenAI）</a>、<a target="_blank" rel="noopener noreferrer" href="https://code.claude.com/docs/en/remote-control">Remote Control（Anthropic）</a>、<a target="_blank" rel="noopener noreferrer" href="https://support.claude.com/en/articles/13947068-assign-tasks-from-anywhere-in-claude-cowork">Dispatch（Anthropic）</a>の各ページです。</p>
+    <div class="box warn"><p class="bt">外から使えるようにするときの注意</p>
+      <p>外からパソコンを操作できるようにすると、スマホを無くしたときに他人に操作されるおそれもあります。<br>
+        スマホには必ず画面ロックを掛け、使わない期間は接続の設定を切っておいてください。<br>
+        会社のパソコンを、画面のロックを外したまま無人で置いておくこともしないでください。</p></div>
+
+    <h3>3-2. 資料の置き場所はObsidian</h3>
+    <p>AIと作った資料やメモが増えてくると、どこに何があるか分からなくなります。<br>
+      私は資料を全てObsidian（無料のメモアプリ。<br>
+      パソコンの中のフォルダーにファイルを置いて管理し、ファイル同士をリンクでつなげられる）に集めています。<br>
+      AIもフォルダーの中のファイルを直接読めるので、「前に作った資料を見て続きを作って」と頼みやすくなります。</p>
+    <p class="sub">公式サイトは<a target="_blank" rel="noopener noreferrer" href="https://obsidian.md/">https://obsidian.md/</a>です。</p>
+
+    <h3>3-3. 時流を追いかける</h3>
+    <p>AIとその周りの技術は毎週のように変わります。次のサイトに目を通しておくと、流れに置いていかれにくくなります。</p>
+    <div class="tbl"><table>
+        <thead><tr><th>サイト</th><th>どんなサイトか</th></tr></thead>
+        <tbody>
+          <tr><th><a target="_blank" rel="noopener noreferrer" href="https://www.publickey1.jp/">Publickey</a></th><td>企業向けのITやクラウド、開発ツールの動きを伝える技術ニュース</td></tr>
+          <tr><th><a target="_blank" rel="noopener noreferrer" href="https://dev.classmethod.jp/">DevelopersIO</a></th><td>クラスメソッドの社員が実際に試した結果を書く技術ブログ。新しいAIの機能を試した記事が早く出ます</td></tr>
+          <tr><th><a target="_blank" rel="noopener noreferrer" href="https://ai.watch.impress.co.jp/">AI Watch</a></th><td>インプレスが運営するAIのニュースサイト。最新の動向や使い方を扱います</td></tr>
+          <tr><th><a target="_blank" rel="noopener noreferrer" href="https://www.anthropic.com/news">Anthropic News</a></th><td>Claudeを作っているAnthropicの公式発表</td></tr>
+          <tr><th><a target="_blank" rel="noopener noreferrer" href="https://piyolog.hatenadiary.jp/">piyolog</a></th><td>情報漏えいや不正アクセスなどセキュリティの出来事を、専門家が分かりやすく整理するブログ。自分の身を守るために読みます</td></tr>
+          <tr><th><a target="_blank" rel="noopener noreferrer" href="https://qiita.com/">Qiita</a></th><td>エンジニアが技術の知識や工夫を投稿する場所</td></tr>
+          <tr><th><a target="_blank" rel="noopener noreferrer" href="https://zenn.dev/">Zenn</a></th><td>Qiitaと同じく、エンジニアが技術記事や本を公開する場所</td></tr>
+    </tbody></table></div>
+    <p>面倒なときは、毎日決まった時刻にChatGPTにニュースをまとめてもらうのも手です。<br>
+      「スケジュール（Scheduled tasks）」という機能を使うと、Proなら時刻を指定して毎日実行できます。<br>
+      ChatGPTの画面で次の文を送り、登録できたかを返事で確かめてください。<br>
+      止めたいときは「ニュースのタスクを止めて」と頼みます。<br>
+      デスクトップアプリで登録できないときは、ブラウザ版のChatGPTで試してください。</p>
+    <div class="copy"><div class="bar"><span>ChatGPTに頼む文（例）</span><button type="button">コピー</button></div><pre>毎朝8時（日本時間）に、前日のAI関連のニュースを新聞のように1つにまとめるタスクを登録してください。見出しと3行の要約、出典のURLを付け、仕事に影響しそうなものを先頭にしてください。登録できたら、タスク名・実行時刻・次に実行される日時を教えてください。</pre></div>
+
+    <h3>3-4. この先どう勉強していくか</h3>
+    <p>学ぶ意欲がある方ほど「この先どう勉強していけば？」と迷う時期がすぐに来ると思います。<br>
+      私のお勧めは次の2つで、これで十分です。<br>
+      迷ったら、まずClaude Academyの講座一覧から入門の講座を1つ受けてみてください。</p>
+    <div class="tbl"><table>
+        <thead><tr><th>学ぶ先</th><th>どんなものか</th></tr></thead>
+        <tbody>
+          <tr><th>Oikonさん</th><td>Claude CodeなどAIの道具の使い方を、日本語で分かりやすく発信している方です。<a target="_blank" rel="noopener noreferrer" href="https://oikon48.dev/ja/blog/">ブログ</a>、<a target="_blank" rel="noopener noreferrer" href="https://zenn.dev/oikon">Zenn</a>、<a target="_blank" rel="noopener noreferrer" href="https://x.com/oikon48">X</a>で読めます。</td></tr>
+          <tr><th>Claude Academy</th><td>Anthropicの公式の学習サイトです。AIの基礎からClaude Codeやスキルの作り方まで、無料の講座がそろっています。有料プランは要りません。<br>
+              <a target="_blank" rel="noopener noreferrer" href="https://academy.claude.com/">https://academy.claude.com/</a></td></tr>
+    </tbody></table></div>
+    <p>もう1つの近道はAI自身に聞くことです。<br>
+      「この機能は何のためにあるの？」「初心者が次に覚えるといいことは？」とChatGPTに聞けば、メンターとして順を追って教えてくれます。<br>
+      ただし大前提の2つ目のとおり、答えは公式の資料で確かめてください。</p>
+    <div class="box"><p class="bt">有料の講座や教材は買わなくて大丈夫です</p>
+      <p>AIのプラン（ChatGPTやClaudeの月額料金）以外に、有料の講座や教材、オンラインサロンへお金を払う必要はありません。良い情報の多くは無料で公開されていますし、分からないことはAI自身に聞けば済みます。</p></div>
+
+    <p style="margin-top:40px">分からないことがあれば、いつでも聞いてください。</p>
+  </div>
+
+  <script>
+document.querySelectorAll('.copy button').forEach(b => {
+  b.addEventListener('click', async () => {
+    const t = b.closest('.copy').querySelector('pre').innerText;
+    let ok = false;
+    try { await navigator.clipboard.writeText(t); ok = true; } catch (e) {
+      const a = document.createElement('textarea'); a.value = t; document.body.appendChild(a); a.select();
+      try { ok = document.execCommand('copy'); } catch (e2) {} a.remove();
+    }
+    b.textContent = ok ? 'コピーしました' : '選択してコピーしてください';
+    setTimeout(() => { b.textContent = 'コピー'; }, 2000);
+  });
+});
+</script>
+  <script>// カタカナ語を行の途中で割らないよう、カタカナの連なりを <span class="kana-word"> で包む。
+// 文節で折る指定（word-break:auto-phrase）は文節が1行に入りきらないと語の途中で割れるうえ、
+// Chrome と Edge でしか効かない。この処理はブラウザを問わず、カタカナの連なりの中だけ改行を禁じる。
+// 読み込み: <script src="scripts/keep-kana.js" defer><\/script>  CSS: .kana-word { word-break:keep-all; }
+(() => {
+    const TARGET = 'h1, h2, h3, h4, p, li, dt, dd, figcaption, td, th, blockquote';
+    const SKIP = '.kana-word, code, pre, kbd, samp, script, style, textarea';
+    // 小書きを含むカタカナと長音。中黒（・）は語の区切りなので含めない
+    const RUN = /[ァ-ヺー]{2,}/g;
+
+    const wrap = (node) => {
+        const text = node.data;
+        // test() ではなく search() で判定する。g 付きの test() は lastIndex を進め、
+        // 続く matchAll() がその位置から探し始めて最初の語を取りこぼす
+        if (text.search(RUN) === -1) return;
+        const frag = document.createDocumentFragment();
+        let last = 0;
+        for (const m of text.matchAll(RUN)) {
+            if (m.index > last) frag.append(text.slice(last, m.index));
+            const span = document.createElement('span');
+            span.className = 'kana-word';
+            span.textContent = m[0];
+            frag.append(span);
+            last = m.index + m[0].length;
+        }
+        if (last < text.length) frag.append(text.slice(last));
+        node.replaceWith(frag);
+    };
+
+    for (const root of document.querySelectorAll(TARGET)) {
+        const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+            acceptNode: (n) => (n.parentElement.closest(SKIP) ? NodeFilter.FILTER_REJECT : NodeFilter.FILTER_ACCEPT),
+        });
+        const nodes = [];
+        while (walker.nextNode()) nodes.push(walker.currentNode);
+        nodes.forEach(wrap);
+    }
+})();
+</script>
+  </body></html>
